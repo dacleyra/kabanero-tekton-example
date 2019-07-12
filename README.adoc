@@ -18,42 +18,42 @@ This repo contains the manifests for the resources that you need to create on yo
 . Since the Tekton pipeline needs to deploy to the cluster itself, you want to ensure that it runs under an identity that has cluster administrator privileges.
 
     For this reason, create a service account and the appropriate cluster role binding by issuing:
-    ```
+   `+
     kubectl apply -f appsody-service-account.yaml
     kubectl apply -f appsody-cluster-role-binding.yaml
-    ```
+   +`
     The previous commands set up a service account called `appsody-sa` and grant the `cluster-admin` role to it. The pipeline you are going to create uses this service account. 
 
 . Make the Docker registry credentials available to the pipeline by adding your docker secret to the `appsody-sa` service account. This can be accomplished by editing the service account, using the following command:
-    ```
+   `+
     kubectl edit serviceaccount appsody-sa
-    ```
+   +`
     An editor opens up. Add your secret to the list of secrets, as shown in the example below: 
-    ```
+   `+
     ...
     secrets:
     - name: appsody-sa-token-ldzbq
     - name: my-docker-secret
-    ```
+   +`
     Save the changes. 
 
 . Now, create the pipeline task and the pipeline definition. We have a simple pipeline, with a single task that performs the various steps of building and deploying the project:
-    ```
+   `+
     kubectl apply -f appsody-build-task.yaml
     kubectl apply -f appsody-build-pipeline.yaml
-    ```
+   +`
     If you are targeting **Openshift**, you need to edit the `appsody-build-task`, and set the path to the Docker config file for the Kaniko container. Issue the following command:
-    ```
+   `+
     kubectl edit task appsody-build-task
-    ```
+   +`
     and then add this environment variable to the `build-push-step` step:
-    ```   
+   `+   
         env:
         - name: DOCKER_CONFIG
           value: /builder/home/.docker
-    ``` 
+   +` 
     The complete set of environment variables for that step should look like the following:
-    ```
+   `+
         env:
         - name: DOCKER_CONFIG
           value: /builder/home/.docker
@@ -61,7 +61,7 @@ This repo contains the manifests for the resources that you need to create on yo
           value: ${outputs.resources.docker-image.url}
         - name: YAMLFILE
           value: ${inputs.params.appsody-deploy-file-name}
-    ```
+   +`
     Note - this addition for Openshift is required for reasons explained in [this issue](https://github.com/appsody/tekton-example/issues/6).
 
 . The pipeline requires the definition of two resources in order to operate:
@@ -69,16 +69,16 @@ This repo contains the manifests for the resources that you need to create on yo
     * The location of the GitHub project that contains your code
 
     For this reason, you need to edit the `appsody-pipeline-resources.yaml`. Change the value of the Docker image url to match your settings:
-    ```
+   `+
     ...
     spec:
       params:
       - name: url
         value: index.docker.io/chilantim/my-appsody-image
         type: image
-    ```
+   +`
     And change the definition of your GitHub project:
-    ```
+   `+
     ...
     spec:
       params:
@@ -86,11 +86,11 @@ This repo contains the manifests for the resources that you need to create on yo
         value: master
       - name: url
         value: https://github.com/chilanti/appsody-test-build    type: git
-    ```
+   +`
 . Once you have edited the resources, apply them to your cluster:
-  ```
+ `+
   kubectl apply -f appsody-pipeline-resources.yaml
-  ```
+ +`
   The Tekton pipeline is now fully set up.
 
 === A few words on the required deployment manifest
