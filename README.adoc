@@ -10,7 +10,7 @@ This repo contains an example of a https://github.com/tektoncd/pipeline[Tekton p
 
 In order to run this example, the following prerequisites are required:
 
-. You have access to a OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
+. You have access to an OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
 
 +
 ....
