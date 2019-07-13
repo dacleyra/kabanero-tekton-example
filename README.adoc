@@ -47,7 +47,8 @@ curl -L https://github.com/knative/serving/releases/download/v0.4.0/istio.yaml \
   | kubectl apply --filename -
 ....
 +
-. You have created an application using the Appsody CLI, and your code is in a GitHub repository. 
+. You have created an application using the Appsody CLI, and your code is in a GitHub repository.  
+[TODO] These instructions rely on that github project using https and being a public repository. We would have to extend the secrets section here to document using a private github repo with a github token secret.
 . Your code repository includes a Knative Serving manifest file called `+appsody-service.yaml+`. We'll discuss this aspect in more detail later on.
 . Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the local Docker registry provided by OpenShift. [TODO] Need instructions or more info, guide won't fully cover that suggestion.
 . [TODO] If the webhook provided by the Tekton expiramental webhook extension is to be demonstrated here, then we must document how to manually install 1) Tekton dashboard 2) Knative sources 3) Tekton webhook extension. That is all covered from https://github.com/tektoncd/experimental/tree/master/webhooks-extension
