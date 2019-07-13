@@ -21,11 +21,9 @@ Manual installation of the Kabanero operator
 .. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml+`
 ....
 +
-
-. Your Kubernetes cluster has the https://github.com/tektoncd/pipeline/blob/master/docs/install.md[Tekton pipelines installed].
-. You have created an application using the appsody CLI, and your code is in a GitHub repository.
+. You have created an application using the Appsody CLI, and your code is in a GitHub repository. Alternatively, you may use an existing sample application from https://github.com/smcclem/appsody-test-project[here]
 . Your code repository includes a Knative Serving manifest file called `+appsody-service.yaml+`. We'll discuss this aspect in more detail later on.
-. Your Kubernetes cluster can access a Docker registry, such as Docker Hub (it can pull and push images). You must have a secret set up that contains valid credentials for authentication against your Docker registry.
+. Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the local Docker registry provided by Openshift. [TODO] Need instructions or more info, guide won't fully cover that suggestion.
 
 === Setting up the pipeline
 
