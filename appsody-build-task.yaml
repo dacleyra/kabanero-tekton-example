@@ -35,6 +35,9 @@ spec:
         - --dockerfile=${inputs.params.pathToDockerFile}
         - --destination=${outputs.resources.docker-image.url}
         - --context=${inputs.params.pathToContext}
+      env:
+        - name: DOCKER_CONFIG
+          value: /builder/home/.docker
     - name: modify-yaml
       image: ubuntu
       command: ['/bin/bash']
