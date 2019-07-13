@@ -52,6 +52,29 @@ kubectl apply -f appsody-cluster-role-binding.yaml
 +
 The previous commands set up a service account called `+appsody-sa+` and grant the `+cluster-admin+` role to it. The pipeline you are going to create uses this service account.
 
+Next, create a secret to hold the login credentials for the Docker registry you want to push the result of your sample pipeline build. Notice the "annotations" field includes URL patterns. In the example below, this secret will be used when the pipeline build is attempting to authenticate with `+https://index.docker.io/v1/+`. `+my-docker-secret+` is the name of secret that we will reference later. You may use any name you wish. 
+
++
+....
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-docker-secret
+  annotations:
+    tekton.dev/docker-0: https://index.docker.io/v1/ 
+type: kubernetes.io/basic-auth
+stringData:
+  username: <your docker userid>
+  password: <your docker password>
+ .... 
+ 
+ Create a yaml file with those contents, such as `+my-docker-secret.yaml+`.  Then run:
++
+....
+kubectl apply -f my-docker-secret.yaml
+....
++
+
 . Make the Docker registry credentials available to the pipeline by adding your docker secret to the `+appsody-sa+` service account. This can be accomplished by editing the service account, using the following command:
 +
 ....
@@ -74,37 +97,10 @@ Save the changes.
 kubectl apply -f appsody-build-task.yaml
 kubectl apply -f appsody-build-pipeline.yaml
 ....
-+
-If you are targeting *Openshift*, you need to edit the `+appsody-build-task+`, and set the path to the Docker config file for the Kaniko container. Issue the following command:
-+
-....
-kubectl edit task appsody-build-task
-....
-+
-and then add this environment variable to the `+build-push-step+` step:
-+
-....
-    env:
-    - name: DOCKER_CONFIG
-      value: /builder/home/.docker
-....
-+
-The complete set of environment variables for that step should look like the following:
-+
-....
-    env:
-    - name: DOCKER_CONFIG
-      value: /builder/home/.docker
-    - name: IMG
-      value: ${outputs.resources.docker-image.url}
-    - name: YAMLFILE
-      value: ${inputs.params.appsody-deploy-file-name}
-....
-+
-Note - this addition for Openshift is required for reasons explained in https://github.com/appsody/tekton-example/issues/6[this issue].
+
 . The pipeline requires the definition of two resources in order to operate:
 * The definition of the Docker image that is built and deployed by the pipeline itself
-* The location of the GitHub project that contains your code
+* The location of the GitHub project that contains your Appsody code
 +
 For this reason, you need to edit the `+appsody-pipeline-resources.yaml+`. Change the value of the Docker image url to match your settings:
 +
