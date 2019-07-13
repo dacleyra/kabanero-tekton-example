@@ -1,10 +1,10 @@
 == kabanero-tekton-example
 
-Example implementation of a Tekton pipeline that deploys an Appsody project on a https://github.com/kabanero-io[Kabanero] managed environment.
+Example implementation of a Tekton pipeline that deploys an Appsody project on a Kabanero managed environment.
 
 === Introduction
 
-This repo contains an example of a Tekton pipeline that builds and deploys an application created with https://github.com/appsody/appsody[Appsody] to a Kubernetes cluster. The application is deployed as a Knative Serving service.
+This repo contains an example of a Tekton pipeline that builds and deploys an application created with https://github.com/appsody/appsody[Appsody] to a https://github.com/kabanero-io[Kabanero] managed cluster. The application is deployed as a Knative Serving service.
 
 === Prerequisites and assumptions
 
