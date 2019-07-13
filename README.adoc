@@ -13,13 +13,13 @@ In order to run this example, the following prerequisites are required:
 . You have access to a OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
 
 [indent=1]
-....
-Manual installation of the Kabanero operator
-. Create a "kabanero" namespace using `+sudo oc create namespace kabanero+` followed by `+oc project kabanero`+ to set your context to the new namespace.
-. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml+`
-. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml+`
-. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml+`
-....
+----
+    Manual installation of the Kabanero operator
+    . Create a "kabanero" namespace using `+sudo oc create namespace kabanero+` followed by `+oc project kabanero`+ to set your context to the new namespace.
+    . `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml+`
+    . `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml+`
+    . `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml+`
+----
 
 . Your Kubernetes cluster has the https://github.com/tektoncd/pipeline/blob/master/docs/install.md[Tekton pipelines installed].
 . You have created an application using the appsody CLI, and your code is in a GitHub repository.
