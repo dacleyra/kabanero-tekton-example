@@ -1,4 +1,4 @@
-== tekton-example
+== kabanero-tekton-example
 
 Example implementation of a Tekton pipeline that deploys an Appsody project.
 
