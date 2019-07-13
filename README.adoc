@@ -15,28 +15,42 @@ In order to run this example, the following prerequisites are required:
 +
 ....
 Manual installation of the Kabanero operator
-.. Create a "kabanero" namespace using `+sudo oc create namespace kabanero+` followed by `+oc project kabanero`+ to set your context to the new namespace.
-.. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml+`
-.. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml+`
-.. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml+`
+
+1) Create a "kabanero" namespace using "sudo oc create namespace kabanero" followed by "oc project kabanero" to set your context to the new namespace.
+2) oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml
+3) oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml
+4) oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml
 ....
 +
 
 . You have installed Istio on your cluster. Istio is not yet installed by the Kabanero operator.
 +
 ....
-Manual installation of Istio
-.. Create a "kabanero" namespace using `+sudo oc create namespace kabanero+` followed by `+oc project kabanero`+ to set your context to the new namespace.
-.. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml+`
-.. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml+`
-.. `+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml+`
+Manual installation of the Istio
+
+1) oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account -n istio-system
+2) oc adm policy add-scc-to-user anyuid -z default -n istio-system
+3) oc adm policy add-scc-to-user anyuid -z prometheus -n istio-system
+4) adm policy add-scc-to-user anyuid -z istio-egressgateway-service-account -n istio-system
+5) oc adm policy add-scc-to-user anyuid -z istio-citadel-service-account -n istio-system
+6) oc adm policy add-scc-to-user anyuid -z istio-ingressgateway-service-account -n istio-system
+7) oc adm policy add-scc-to-user anyuid -z istio-cleanup-old-ca-service-account -n istio-system
+8) oc adm policy add-scc-to-user anyuid -z istio-mixer-post-install-account -n istio-system
+9) oc adm policy add-scc-to-user anyuid -z istio-mixer-service-account -n istio-system
+10) oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account -n istio-system
+11) oc adm policy add-scc-to-user anyuid -z istio-sidecar-injector-service-account -n istio-system
+12) oc adm policy add-cluster-role-to-user cluster-admin -z istio-galley-service-account -n istio-system
+13) oc adm policy add-scc-to-user anyuid -z cluster-local-gateway-service-account -n istio-system
+14) kubectl apply --filename https://github.com/knative/serving/releases/download/v0.4.0/istio-crds.yaml &&
+curl -L https://github.com/knative/serving/releases/download/v0.4.0/istio.yaml \
+  | sed 's/LoadBalancer/NodePort/' \
+  | kubectl apply --filename -
 ....
 +
-
-. You have created an application using the Appsody CLI, and your code is in a GitHub repository. Alternatively, you may use an existing sample application from https://github.com/smcclem/appsody-test-project[here]
+. You have created an application using the Appsody CLI, and your code is in a GitHub repository. 
 . Your code repository includes a Knative Serving manifest file called `+appsody-service.yaml+`. We'll discuss this aspect in more detail later on.
 . Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the local Docker registry provided by OpenShift. [TODO] Need instructions or more info, guide won't fully cover that suggestion.
-. [TODO] If the webhook provided by the Tekton expiramental webhook extension is to be demostrated here, then we must document how to manually install 1) Tekton dashboard 2) Knative sources 3) Tekton webhook extension. That is all covered from https://github.com/tektoncd/experimental/tree/master/webhooks-extension
+. [TODO] If the webhook provided by the Tekton expiramental webhook extension is to be demonstrated here, then we must document how to manually install 1) Tekton dashboard 2) Knative sources 3) Tekton webhook extension. That is all covered from https://github.com/tektoncd/experimental/tree/master/webhooks-extension
 
 . Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the local Docker registry provided by OpenShift. [TODO] Need instructions or more info, guide won't fully cover that suggestion.
 
@@ -145,7 +159,7 @@ As we mentioned earlier, the pipeline is designed to deploy your application to 
 Here we provide an example of such a deployment manifest:
 
 ....
-piVersion: serving.knative.dev/v1alpha1
+apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
   name: appsody-project
