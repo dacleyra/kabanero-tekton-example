@@ -55,7 +55,9 @@ kubectl apply -f appsody-cluster-role-binding.yaml
 +
 The previous commands set up a service account called `+appsody-sa+` and grant the `+cluster-admin+` role to it. The pipeline you are going to create uses this service account.
 
-Next, create a secret to hold the login credentials for the Docker registry you want to push the result of your sample pipeline build. Notice the "annotations" field includes URL patterns. In the example below, this secret will be used when the pipeline build is attempting to authenticate with `+https://index.docker.io/v1/+`. `+my-docker-secret+` is the name of secret that we will reference later. You may use any name you wish. 
+. Next, create a secret to hold the login credentials for the Docker registry where you want to push the result of your sample pipeline build. Notice the "annotations" field includes URL patterns. 
+In the example below, this secret will be used when the pipeline build is attempting to authenticate with `+https://index.docker.io/v1/+`. `+my-docker-secret+` is the name of secret that we will reference later. 
+You may use any name you wish. 
 
 +
 ....
@@ -69,9 +71,10 @@ type: kubernetes.io/basic-auth
 stringData:
   username: <your docker userid>
   password: <your docker password>
- .... 
+.... 
++
  
- Create a yaml file with those contents, such as `+my-docker-secret.yaml+`.  Then run:
+Create a yaml file with those contents, such as `+my-docker-secret.yaml+`, making sure to replace the username and password values with your own values.  Then run:
 +
 ....
 kubectl apply -f my-docker-secret.yaml
@@ -112,7 +115,7 @@ For this reason, you need to edit the `+appsody-pipeline-resources.yaml+`. Chang
 spec:
   params:
   - name: url
-    value: index.docker.io/chilantim/my-appsody-image
+    value: index.docker.io/your-userid/my-appsody-image
     type: image
 ....
 +
@@ -125,7 +128,7 @@ spec:
   - name: revision
     value: master
   - name: url
-    value: https://github.com/chilanti/appsody-test-build    type: git
+    value: https://github.com/your-userid/appsody-test-build
 ....
 . Once you have edited the resources, apply them to your cluster:
 
@@ -191,12 +194,40 @@ The implementation we have provided assumes the deployment manifest is in the `+
 
 === Running the pipeline manually
 
-The execution of a Tekton pipeline can be triggered automatically by a webhook that you can define on your GitHub project. However, that requires your Kubernetes cluster to be accessible on a public internet endpoint. For this reason, we provided a manual trigger (or PipelineRun resource) that you can use to kick off the pipeline on your cluster.
+This repo provides a manual trigger (via a PipelineRun resource) that you can use to kick off the pipeline on your cluster.
 
 Run the following command:
+
 
 ....
 kubectl apply -f appsody-pipeline-run.yaml
 ....
 
-You will observe the pipeline being executed on your cluster.
+
+A new pod will be launched in the "kabanero" namespace with the name similar to:
+
+....
+appsody-manual-pipeline-run-appsody-build-t9g87-pod-6c00e4
+....
+
+To view the logs from the running pipeline, use this command, tailored for the specific id of your pod:
+
+....
+kubectl logs appsody-manual-pipeline-run-appsody-build-t9g87-pod-6c00e4 -n kabanero --all-containers
+....
+
+In that output, you will see the output from the pipeline build. 
+
+To re-run another build, first delete the existing pipeline-run before re-running the apply command:
+
+
+....
+kubectl delete -f appsody-pipeline-run.yaml
+....
+
+
+=== Triggering the pipeline via a git webhook
+
+[TODO] Include information about using the Tekton dashboard webhook extension to setup the git webhook. 
+This would include creating a webhook using the "appsody-build-pipeline" previously defined in these instructions. 
+
