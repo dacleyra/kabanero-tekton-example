@@ -1,6 +1,6 @@
 == kabanero-tekton-example
 
-Example implementation of a Tekton pipeline that deploys an Appsody project.
+Example implementation of a Tekton pipeline that deploys an Appsody project on a https://github.com/kabanero-io[Kabanero] managed environment.
 
 === Introduction
 
