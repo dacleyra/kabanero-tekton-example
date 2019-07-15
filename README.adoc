@@ -10,7 +10,7 @@ This repo contains an example of a https://github.com/tektoncd/pipeline[Tekton p
 
 In order to run this example, the following prerequisites are required:
 
-. You have access to an OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
+. You have cluster-admin access to an OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
 
 +
 ....
@@ -47,13 +47,11 @@ curl -L https://github.com/knative/serving/releases/download/v0.4.0/istio.yaml \
   | kubectl apply --filename -
 ....
 +
-. You have created an application using the Appsody CLI, and your code is in a GitHub repository.  
-[TODO] These instructions rely on that github project using https and being a public repository. We would have to extend the secrets section here to document using a private github repo with a github token secret.
+. You have created an application using the Appsody CLI, and your code is in a public GitHub repository.  
+. If the GitHub repository is private, refer to the https://github.com/tektoncd/pipeline/blob/master/docs/auth.md[Tekton Authentication Documentation] on how to add github credentials to your pipeline task or run.
 . Your code repository includes a Knative Serving manifest file called `+appsody-service.yaml+`. We'll discuss this aspect in more detail later on.
-. Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the local Docker registry provided by OpenShift. [TODO] Need instructions or more info, guide won't fully cover that suggestion.
-. [TODO] If the webhook provided by the Tekton expiramental webhook extension is to be demonstrated here, then we must document how to manually install 1) Tekton dashboard 2) Knative sources 3) Tekton webhook extension. That is all covered from https://github.com/tektoncd/experimental/tree/master/webhooks-extension
+. Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the https://docs.openshift.com/container-platform/3.11/install_config/registry/[Internal Openshift Registry]. 
 
-. Your Kubernetes cluster can access a Docker registry, such as https://hub.docker.com/[Docker Hub] (it can pull and push images). Alternatively, you can use the local Docker registry provided by OpenShift. [TODO] Need instructions or more info, guide won't fully cover that suggestion.
 
 === Setting up the pipeline
 
@@ -70,7 +68,16 @@ kubectl apply -f appsody-cluster-role-binding.yaml
 +
 The previous commands set up a service account called `+appsody-sa+` and grant the `+cluster-admin+` role to it. The pipeline you are going to create uses this service account.
 
-. Next, create a secret to hold the login credentials for the Docker registry where you want to push the result of your sample pipeline build. Notice the "annotations" field includes URL patterns. 
+. Next, create and associate a secret holding the credentials for the Docker registry where you want to push the resultant image of your sample pipeline build.
+
+. If using the https://docs.openshift.com/container-platform/3.11/install_config/registry/[Internal Openshift Registry], add the https://docs.openshift.com/container-platform/3.11/dev_guide/service_accounts.html#default-service-accounts-and-roles[image-builder] role to the appsody-sa service account so it has push access. The internal registry secret is automatically associated with the `+appsody-sa+` service account by Openshift, and now as access to push images into project.
++
+....
+oc policy add-role-to-user system:image-builder system:serviceaccount:kabanero:appsody-sa
+.... 
++
+
+. If using an external registry, create a secret.
 In the example below, this secret will be used when the pipeline build is attempting to authenticate with `+https://index.docker.io/v1/+`. `+my-docker-secret+` is the name of secret that we will reference later. 
 You may use any name you wish. 
 
@@ -243,6 +250,5 @@ kubectl delete -f appsody-pipeline-run.yaml
 
 === Triggering the pipeline via a git webhook
 
-[TODO] Include information about using the Tekton dashboard webhook extension to setup the git webhook. 
-This would include creating a webhook using the "appsody-build-pipeline" previously defined in these instructions. 
+An advanced scenario with automatic triggering of the pipeline via a git webhook may be accomplished by use of the https://github.com/tektoncd/dashboard/[Tekton Dashboard] and https://github.com/tektoncd/experimental/tree/master/webhooks-extension[experimental webhooks-extension].
 
