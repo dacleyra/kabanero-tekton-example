@@ -70,7 +70,7 @@ The previous commands set up a service account called `+appsody-sa+` and grant t
 
 . Next, create and associate a secret holding the credentials for the Docker registry where you want to push the resultant image of your sample pipeline build.
 
-. If using the https://docs.openshift.com/container-platform/3.11/install_config/registry/[Internal Openshift Registry], add the https://docs.openshift.com/container-platform/3.11/dev_guide/service_accounts.html#default-service-accounts-and-roles[image-builder] role to the appsody-sa service account so it has push access. The internal registry secret is automatically associated with the `+appsody-sa+` service account by Openshift, and now as access to push images into project.
+. If using the https://docs.openshift.com/container-platform/3.11/install_config/registry/[Internal Openshift Registry], add the https://docs.openshift.com/container-platform/3.11/dev_guide/service_accounts.html#default-service-accounts-and-roles[image-builder] role to the `+appsody-sa+` service account so it has push access. The internal registry secret is automatically associated with the `+appsody-sa+` service account by Openshift, and now as access to push images into project.
 +
 ....
 oc policy add-role-to-user system:image-builder system:serviceaccount:kabanero:appsody-sa
