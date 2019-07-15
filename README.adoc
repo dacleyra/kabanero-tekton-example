@@ -11,8 +11,6 @@ This repo contains an example of a https://github.com/tektoncd/pipeline[Tekton p
 In order to run this example, the following prerequisites are required:
 
 . You have cluster-admin access to an OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
-
-Manual installation of the Kabanero operator
 +
 ....
 oc create namespace kabanero
@@ -22,10 +20,7 @@ oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/mast
 oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml
 ....
 +
-
 . You have installed Istio on your cluster. Istio is not yet installed by the Kabanero operator.
-
-Manual installation of Istio
 +
 ....
 kubectl apply --filename https://github.com/knative/serving/releases/download/v0.4.0/istio-crds.yaml &&
