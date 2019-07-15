@@ -50,7 +50,13 @@ oc adm policy add-scc-to-user anyuid -z cluster-local-gateway-service-account -n
 
 === Setting up the pipeline
 
-This repo contains the manifests for the resources that you need to create on your cluster in order to run the Tekton pipeline for Appsody. Ensure that you are creating all resources in the previously created "kabanero" namespace.
+. Clone the appsody https://github.com/appsody/tekton-example[tekton-example] repository. This repository contains the pipeline manifests.
++
+....
+git clone https://github.com/appsody/tekton-example.git
+....
++
+. Ensure that you are creating all resources in the previously created "kabanero" namespace.
 
 . Since the Tekton pipeline needs to deploy to the cluster itself, you want to ensure that it runs under an identity that has cluster administrator privileges.
 +
@@ -117,9 +123,26 @@ Save the changes.
 . Now, create the pipeline task and the pipeline definition. We have a simple pipeline, with a single task that performs the various steps of building and deploying the project:
 +
 ....
+kubectl edit task appsody-build-task
+....
++
+and then add this environment variable to the build-push-step step:
++
+....
+...
+    env:
+    - name: DOCKER_CONFIG
+      value: /builder/home/.docker
+....
++
+Apply the manifests
++
+....
+...
 kubectl apply -f appsody-build-task.yaml
 kubectl apply -f appsody-build-pipeline.yaml
 ....
++
 
 . The pipeline requires the definition of two resources in order to operate:
 * The definition of the Docker image that is built and deployed by the pipeline itself
