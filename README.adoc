@@ -12,39 +12,39 @@ In order to run this example, the following prerequisites are required:
 
 . You have cluster-admin access to an OpenShift or OKD cluster and have installed the https://github.com/kabanero-io/kabanero-operator[Kabanero operator].
 
+Manual installation of the Kabanero operator
 +
 ....
-Manual installation of the Kabanero operator
-
-1) Create a "kabanero" namespace using "sudo oc create namespace kabanero" followed by "oc project kabanero" to set your context to the new namespace.
-2) oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml
-3) oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml
-4) oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml
+oc create namespace kabanero
+oc project kabanero
+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/dependencies.yaml
+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/deploy/releases/0.0.1/kabanero-operator.yaml
+oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/master/config/samples/full.yaml
 ....
 +
 
 . You have installed Istio on your cluster. Istio is not yet installed by the Kabanero operator.
+
+Manual installation of Istio
 +
 ....
-Manual installation of Istio
-
-1) oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account -n istio-system
-2) oc adm policy add-scc-to-user anyuid -z default -n istio-system
-3) oc adm policy add-scc-to-user anyuid -z prometheus -n istio-system
-4) adm policy add-scc-to-user anyuid -z istio-egressgateway-service-account -n istio-system
-5) oc adm policy add-scc-to-user anyuid -z istio-citadel-service-account -n istio-system
-6) oc adm policy add-scc-to-user anyuid -z istio-ingressgateway-service-account -n istio-system
-7) oc adm policy add-scc-to-user anyuid -z istio-cleanup-old-ca-service-account -n istio-system
-8) oc adm policy add-scc-to-user anyuid -z istio-mixer-post-install-account -n istio-system
-9) oc adm policy add-scc-to-user anyuid -z istio-mixer-service-account -n istio-system
-10) oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account -n istio-system
-11) oc adm policy add-scc-to-user anyuid -z istio-sidecar-injector-service-account -n istio-system
-12) oc adm policy add-cluster-role-to-user cluster-admin -z istio-galley-service-account -n istio-system
-13) oc adm policy add-scc-to-user anyuid -z cluster-local-gateway-service-account -n istio-system
-14) kubectl apply --filename https://github.com/knative/serving/releases/download/v0.4.0/istio-crds.yaml &&
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.4.0/istio-crds.yaml &&
 curl -L https://github.com/knative/serving/releases/download/v0.4.0/istio.yaml \
-  | sed 's/LoadBalancer/NodePort/' 
-  | kubectl apply --filename -
+  | sed 's/LoadBalancer/NodePort/' \
+  | kubectl apply --filename -
+oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z default -n istio-system
+oc adm policy add-scc-to-user anyuid -z prometheus -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-egressgateway-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-citadel-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-ingressgateway-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-cleanup-old-ca-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-mixer-post-install-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-mixer-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z istio-sidecar-injector-service-account -n istio-system
+oc adm policy add-cluster-role-to-user cluster-admin -z istio-galley-service-account -n istio-system
+oc adm policy add-scc-to-user anyuid -z cluster-local-gateway-service-account -n istio-system
 ....
 +
 . You have created an application using the Appsody CLI, and your code is in a public GitHub repository.  
