@@ -60,12 +60,12 @@ git clone https://github.com/appsody/tekton-example.git
 
 . Since the Tekton pipeline needs to deploy to the cluster itself, you want to ensure that it runs under an identity that has cluster administrator privileges.
 +
-For this reason, create a service account, the appropriate cluster role binding, and hostPath access by issuing:
+For this reason, create a service account, the appropriate cluster role binding, and hostmount-anyuid access by issuing:
 +
 ....
 kubectl apply -f appsody-service-account.yaml
 kubectl apply -f appsody-cluster-role-binding.yaml
-oc adm policy add-scc-to-user hostaccess -z appsody-sa -n kabanero
+oc adm policy add-scc-to-user hostmount-anyuid -z appsody-sa -n kabanero
 ....
 +
 The previous commands set up a service account called `+appsody-sa+` and grant the `+cluster-admin+` role to it. The pipeline you are going to create uses this service account.
