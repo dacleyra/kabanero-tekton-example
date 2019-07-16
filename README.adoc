@@ -166,9 +166,25 @@ spec:
     value: https://github.com/your-userid/appsody-test-build
 ....
 . Once you have edited the resources, apply them to your cluster:
-
++
 ....
 kubectl apply -f appsody-pipeline-resources.yaml
+....
++
+. The Tekton buld pipeline requires a Persistent Volume. If you do not have a default dynamic storage provider, create a hostPath volume:
++
+....
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: appsody-manual-pipeline-run-pvc
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /var/lib/appsody-manual-pipeline-run-pvc
 ....
 
 The Tekton pipeline is now fully set up.
