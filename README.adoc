@@ -64,7 +64,7 @@ For this reason, create a service account, the appropriate cluster role binding,
 +
 ....
 kubectl apply -f appsody-service-account.yaml
-kubectl apply -f appsody-cluster-role-binding.yaml
+oc adm policy add-cluster-role-to-user cluster-admin -z appsody-sa -n kabanero
 oc adm policy add-scc-to-user hostmount-anyuid -z appsody-sa -n kabanero
 ....
 +
