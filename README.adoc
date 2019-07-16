@@ -151,7 +151,6 @@ spec:
   params:
   - name: url
     value: index.docker.io/your-userid/my-appsody-image
-    type: image
 ....
 +
 And change the definition of your GitHub project:
