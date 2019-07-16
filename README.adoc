@@ -23,10 +23,6 @@ oc apply -f https://raw.githubusercontent.com/kabanero-io/kabanero-operator/mast
 . You have installed Istio on your cluster. Istio is not yet installed by the Kabanero operator.
 +
 ....
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.4.0/istio-crds.yaml &&
-curl -L https://github.com/knative/serving/releases/download/v0.4.0/istio.yaml \
-  | sed 's/LoadBalancer/NodePort/' \
-  | kubectl apply --filename -
 oc adm policy add-scc-to-user anyuid -z istio-ingress-service-account -n istio-system
 oc adm policy add-scc-to-user anyuid -z default -n istio-system
 oc adm policy add-scc-to-user anyuid -z prometheus -n istio-system
@@ -40,6 +36,10 @@ oc adm policy add-scc-to-user anyuid -z istio-pilot-service-account -n istio-sys
 oc adm policy add-scc-to-user anyuid -z istio-sidecar-injector-service-account -n istio-system
 oc adm policy add-cluster-role-to-user cluster-admin -z istio-galley-service-account -n istio-system
 oc adm policy add-scc-to-user anyuid -z cluster-local-gateway-service-account -n istio-system
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.4.0/istio-crds.yaml &&
+curl -L https://github.com/knative/serving/releases/download/v0.4.0/istio.yaml \
+  | sed 's/LoadBalancer/NodePort/' \
+  | kubectl apply --filename -
 ....
 +
 . You have created an application using the Appsody CLI, and your code is in a public GitHub repository.  
