@@ -127,9 +127,19 @@ Modify `+appsody-build-task.yaml+` and add this environment variable to the buil
 +
 ....
 ...
-    env:
-    - name: DOCKER_CONFIG
-      value: /builder/home/.docker
+      env:
+      - name: DOCKER_CONFIG
+        value: /builder/home/.docker
+....
++
+If you are using the Internal Openshift Registry, add the arg `+--skip-tls-verify+` to the executor command
++
+....
+...
+      command:
+        - /kaniko/executor
+      args:
+        - --skip-tls-verify
 ....
 +
 Apply the manifests
